@@ -1,0 +1,1 @@
+# shoppy-n8n-agent
