@@ -68,7 +68,7 @@ n8n Workflows
 - Google Cloud API Key (for Gemini)
 - ngrok account (for webhook tunneling)
 - Google Sheets API credentials
-- SMTP email credentials
+- Gmail API credentials
 
 ### 1. Clone the Repository
 
@@ -95,12 +95,6 @@ NGROK_AUTH_TOKEN=your_ngrok_token
 
 # Google Sheets
 GOOGLE_SHEET_ID=your_google_sheet_id
-
-# SMTP Configuration
-SMTP_HOST=smtp.protonmail.com
-SMTP_PORT=587
-SMTP_USER=your_email@protonmail.com
-SMTP_PASS=yourpassword
 
 # Google AI
 GEMINI_API_KEY=your_google_ai_api_key
@@ -148,7 +142,7 @@ Your Google Sheet should have the following columns:
 1. Bot detects quotation or product detail request
 2. Collects necessary product info and user email
 3. Composes professional quotation email
-4. Sends via configured SMTP account
+4. Sends via configured gmail account.
 5. Logs interaction in Google Sheets
 
 ---
