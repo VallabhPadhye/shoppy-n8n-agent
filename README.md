@@ -7,7 +7,7 @@ An intelligent shopping automation agent built with n8n, powered by Google Gemin
 ## ✨ Features
 
 ### 🧠 AI-Powered Conversations
-- Leverages **Google Gemini 1.5 Turbo** for smart, contextual shopping conversations
+- Leverages **Google Gemini 3.5 Turbo** for smart, contextual shopping conversations
 - Understands user preferences, interests, and intent
 - Provides personalized product recommendations
 
