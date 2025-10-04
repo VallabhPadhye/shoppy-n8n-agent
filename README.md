@@ -1,6 +1,6 @@
 # 🤖 Shoppy n8n Agent
 
-An intelligent shopping automation agent built with n8n, powered by Google Gemini 1.5 Turbo, and integrated with Telegram, Google Sheets, and email automation. Shoppy assists users in product discovery, quotations, and information sharing while automatically logging all interactions for analytics and marketing insights.
+An intelligent shopping automation agent built with n8n, powered by Google Gemini 3.5 Turbo, and integrated with Telegram, Google Sheets, and email automation. Shoppy assists users in product discovery, quotations, and information sharing while automatically logging all interactions for analytics and marketing insights.
 
 ---
 
