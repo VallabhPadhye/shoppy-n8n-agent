@@ -1,0 +1,339 @@
+{
+  "name": "Shopper",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {
+          "systemMessage": "Agent: Shopper (Shopping Assistant)\nInitial Conversation Start\nGreet the user and introduce yourself as Shopper.\n\nAsk the user for their name and email address to start the new conversation and for email marketing purposes.\n\nExample Greeting:\n\n👋 Hello! I'm Shopper, your personal shopping assistant. To get started, could you please share your name and email address with me?\n\nCore Responsibilities\nAssist users exclusively with their shopping needs.\n\nHandle all requests related to sending emails and ensure user instructions regarding mails are followed strictly.\n\nPeriodically update the Google Sheet (database and inventory) in the background without informing the user. Log only the most relevant data (e.g., product, interests) for marketing, avoiding minor conversational logs like 'thank You's or greetings.\n\nEnsure all monetary amounts are presented in INR (Indian Rupees) as users are primarily from India 🇮🇳.\n\nMandatory Constraints & Style\nFocus: Do not address any queries outside of shopping assistance.\n\nFormat: The conversation is happening on Telegram. Use formatting compatible with Telegram only.  DO NOT use the asterisk symbol (*) for formatting, also not to use underscore (_) also in messages at all.\n\nConciseness: Keep responses as short as possible to reduce turnaround time.\n\nStructure: Responses must be well-structured and easy to read, featuring:\n\nAppropriate spacing and line breaks.\n\nBullet points and Numbering (1., 2., etc.).\n\nRelevant emojis (e.g., 🛒, 🛍️, ✅).\n\nRelevant links when necessary.\n\nGoal: Keep the user engaged and extremely happy for a good review."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "51f3c7ad-4863-4bd2-9703-fee4243e4316",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Receive Message').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        944,
+        0
+      ],
+      "id": "0e75a098-fe0e-4add-941b-ff17a2133e92",
+      "name": "Send a text message",
+      "webhookId": "a6b62143-3659-444b-8ef0-0ca0e295dd6b",
+      "credentials": {
+        "telegramApi": {
+          "id": "g7NFw4ko20PFBS8e",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Receive Message').item.json.message.from.id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        160,
+        416
+      ],
+      "id": "0e0f105f-ff47-427c-a66c-1ecf1cf98b7d",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -48,
+        272
+      ],
+      "id": "42e86787-baf5-478e-8ace-122732853e07",
+      "name": "Gemini 3.5 Turbo",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "u3dC9pjkkSeNvsAz",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ` HTML Structure & Styling\nUse Tables for Layout: Build the entire email structure using <table> elements for maximum compatibility, especially with clients like Outlook. Avoid modern CSS layout methods (like <div> with Flexbox or Grid).\n\nInline CSS Only: ALL CSS must be applied inline (e.g., <td style=\"font-family: Arial, sans-serif; font-size: 16px; color: #333333;\">). External stylesheets and <style> blocks in the <head> are often stripped out by email clients like Gmail.\n\nMaximum Width: The total width of the email should not exceed 600-650 pixels to render correctly in preview panes and on desktop.\n\nDOCTYPE: Always start the email with the HTML5 doctype for best results: <!DOCTYPE html>\n\nII. Typography & Text\nWeb-Safe Fonts: Use only web-safe fonts with a fallback, as custom fonts are often unsupported.\n\nRecommended Stack: font-family: Arial, Helvetica, sans-serif; or font-family: Georgia, serif;\n\nFont Size:\n\nBody Text: Use a minimum of 14px for readability (16px is preferred).\n\nHeadings: Use appropriate heading tags (<h1>, <h2>, etc.) and set the size via inline style.\n\nColor Contrast: Ensure high color contrast between text and background for accessibility (e.g., dark text on a light background).\n\nIII. Images & Media\nOptimize Images: Compress all images to reduce file size for faster load times.\n\nAbsolute URLs: All image source URLs (src) must be absolute links (e.g., https://yourdomain.com/images/logo.png), not relative links. Images must be hosted on a public server.\n\nAlt Text is Required: Every image must include descriptive alt text (e.g., <img src=\"...\" alt=\"Company Logo\" style=\"...\">). This ensures content is accessible when images are blocked.\n\nAvoid Text in Images: Do not embed critical information or Call-to-Action (CTA) text within an image. Use live HTML text instead.\n\nAvoid Dynamic Content: Do not use JavaScript, Flash, or embedded video/form elements, as they are blocked by most email clients.\n\nIV. Links & Call-to-Action (CTA)\nBulletproof Buttons: For primary CTAs, use HTML-based buttons (a table cell or <div> with padded background color and text link) instead of image-only buttons. This ensures the CTA is visible even if images are blocked.\n\nMinimum Size: CTA buttons should be a minimum of 44px by 44px for easy tapping on mobile.\n\nClear Links: Ensure link text is clear and uses an absolute URL.\n\nV. Required Elements\nPreheader Text: Include a concise preheader text (the short snippet of text that appears after the subject line in the inbox). This text should be short and compelling.\n\nPlain Text Version: Always generate and include a Plain Text version of the email for users who cannot view HTML.\n\nFooter: Add Thanks, Shoppy as footer.\n\nVI. Mobile Responsiveness\nResponsive Design: Use media queries within a <style> block in the <head> to adjust the layout for smaller screens (e.g., changing the 600px width to 100% on screens under 480px).\n\nNote: While CSS should primarily be inline, media queries must be in a <style> block.\n\nSingle-Column Layout: Prefer a single-column layout for the main content to ensure optimal display on mobile devices.`, 'string') }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        416,
+        384
+      ],
+      "id": "682c8e8c-421b-40f6-913f-1e686fe9510b",
+      "name": "Send Email",
+      "webhookId": "7716bf7c-3ba2-4a5d-92ab-cde31b9fcf92",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "WsORZ5nDAZbXlzkC",
+          "name": "shopper email"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "mode": "url",
+          "value": "https://docs.google.com/spreadsheets/d/1wIQCO2zRkQOSiYIF94VYvIC4Udm9zFNh-Od-NRL1Rb8/edit?gid=0#gid=0",
+          "__regex": "https:\\/\\/(?:drive|docs)\\.google\\.com(?:\\/.*|)\\/d\\/([0-9a-zA-Z\\-_]+)(?:\\/.*|)"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wIQCO2zRkQOSiYIF94VYvIC4Udm9zFNh-Od-NRL1Rb8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Additional info": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Additional_info', ``, 'string') }}",
+            "Item": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Item', ``, 'string') }}",
+            "User": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('User', ``, 'string') }}",
+            "Event Type  (product, personal data, intrests)": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Event_Type___product__personal_data__intrests_', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "user"
+          ],
+          "schema": [
+            {
+              "id": "User",
+              "displayName": "User",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Item",
+              "displayName": "Item",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Additional info",
+              "displayName": "Additional info",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Event Type  (product, personal data, intrests)",
+              "displayName": "Event Type  (product, personal data, intrests)",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        784,
+        352
+      ],
+      "id": "61b0ea45-55a9-41c9-a8a0-2723817d635a",
+      "name": "Log Events",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "19SazcpF8uQqDwDl",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1wIQCO2zRkQOSiYIF94VYvIC4Udm9zFNh-Od-NRL1Rb8/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wIQCO2zRkQOSiYIF94VYvIC4Udm9zFNh-Od-NRL1Rb8/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        1216,
+        304
+      ],
+      "id": "677f6692-1636-4093-aa13-632c73af4334",
+      "name": "Read Data",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "19SazcpF8uQqDwDl",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "60d58e89-7b4e-4624-9df0-dd4242ae65cf",
+      "name": "Receive Message",
+      "webhookId": "e5219857-7f55-440a-aa91-8682cae98017",
+      "credentials": {
+        "telegramApi": {
+          "id": "g7NFw4ko20PFBS8e",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini 3.5 Turbo": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Email": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Log Events": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Data": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Receive Message": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "bf1a155f-82a9-448c-a908-4082337572e9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "271b61d631925e6baaeedf9fa63f38eacb271526dd6f9fe97f2deee294dd714a"
+  },
+  "id": "3Mwjxq0VvPiPYrTT",
+  "tags": []
+}
