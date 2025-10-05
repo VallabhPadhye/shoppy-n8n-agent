@@ -107,7 +107,7 @@
         "documentId": {
           "__rl": true,
           "mode": "url",
-          "value": "https://docs.google.com/spreadsheets/d/1wIQCO2zRkQOSiYIF94VYvIC4Udm9zFNh-Od-NRL1Rb8/edit?gid=0#gid=0",
+          "value": "YOUR GOOGLE DOCS SHEET LINK",
           "__regex": "https:\\/\\/(?:drive|docs)\\.google\\.com(?:\\/.*|)\\/d\\/([0-9a-zA-Z\\-_]+)(?:\\/.*|)"
         },
         "sheetName": {
@@ -115,7 +115,7 @@
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Sheet1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wIQCO2zRkQOSiYIF94VYvIC4Udm9zFNh-Od-NRL1Rb8/edit#gid=0"
+          "cachedResultUrl": "YOUR GOOGLE DOCS SHEET LINK"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -194,7 +194,7 @@
       "parameters": {
         "documentId": {
           "__rl": true,
-          "value": "https://docs.google.com/spreadsheets/d/1wIQCO2zRkQOSiYIF94VYvIC4Udm9zFNh-Od-NRL1Rb8/edit?gid=0#gid=0",
+          "value": "YOUR GOOGLE DOCS SHEET LINK",
           "mode": "url"
         },
         "sheetName": {
@@ -202,7 +202,7 @@
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "Sheet1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1wIQCO2zRkQOSiYIF94VYvIC4Udm9zFNh-Od-NRL1Rb8/edit#gid=0"
+          "cachedResultUrl": "YOUR GOOGLE DOCS SHEET LINK"
         },
         "options": {}
       },
